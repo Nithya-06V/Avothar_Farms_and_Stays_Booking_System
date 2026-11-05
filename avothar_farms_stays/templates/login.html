@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Admin Login | Avothar Farms & Stays{% endblock %}
+{% block content %}
+<section class="auth-section py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-5 col-md-7">
+        <div class="auth-card shadow-lg">
+          <div class="auth-header text-center mb-4">
+            <span class="brand-mark">A</span>
+            <h3>Admin Login</h3>
+          </div>
+          <form method="post">
+            <div class="mb-3">
+              <label class="form-label">Username</label>
+              <input type="text" class="form-control" name="username" placeholder="Enter admin username" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Password</label>
+              <div class="input-group">
+                <input type="password" class="form-control" name="password" id="passwordField" placeholder="Enter password" required />
+                <button class="btn btn-outline-secondary" type="button" id="togglePassword">Show</button>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+          </form>
+          <div class="mt-3 text-center small text-muted">Demo credentials: admin / admin123</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

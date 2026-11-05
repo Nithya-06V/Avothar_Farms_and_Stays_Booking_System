@@ -1,0 +1,277 @@
+{% extends 'base.html' %}
+{% block title %}Avothar Farms & Stays | Luxury Stays{% endblock %}
+{% block content %}
+<section class="hero-section">
+  <div class="hero-overlay"></div>
+  <div class="container hero-content">
+    <div class="row align-items-center min-vh-75">
+      <div class="col-lg-7">
+        <span class="eyebrow">Experience Nature, Comfort and Luxury</span>
+        <h1>Book your perfect farm stay in the lap of nature.</h1>
+        <p>Discover handcrafted villas, private farmhouses, and tranquil cottages for unforgettable getaways with family and friends.</p>
+        <div class="d-flex flex-wrap gap-3 mt-4">
+          <a href="{{ url_for('properties') }}" class="btn btn-primary btn-lg">Explore Stays</a>
+          <a href="{{ url_for('properties', type='Villa') }}" class="btn btn-outline-light btn-lg">Book a Villa</a>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="search-card shadow-lg">
+          <h4>Search Your Stay</h4>
+          <form action="{{ url_for('properties') }}" method="get">
+            <div class="mb-3">
+              <label class="form-label">Property Type</label>
+              <select class="form-select" name="type">
+                <option value="all">All Stays</option>
+                <option value="Villa">Luxury Villas</option>
+                <option value="Farmhouse">Farmhouses</option>
+                <option value="House">Independent Houses</option>
+                <option value="Cottage">Cottages</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats-bar">
+  <div class="container">
+    <div class="row g-4 text-center">
+      <div class="col-md-3">
+        <div class="stat-box">
+          <h3>{{ stats.total_properties }}</h3>
+          <p>Premium Properties</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="stat-box">
+          <h3>4.9/5</h3>
+          <p>Guest Satisfaction</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="stat-box">
+          <h3>{{ stats.total_bookings }}</h3>
+          <p>Bookings Managed</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="stat-box">
+          <h3>24/7</h3>
+          <p>Guest Support</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section py-5">
+  <div class="container">
+    <div class="section-header">
+      <p class="eyebrow text-primary">Featured Stays</p>
+      <h2>Handpicked favourites for your next escape</h2>
+    </div>
+    <div class="row g-4">
+      {% for property in properties %}
+      <div class="col-lg-4 col-md-6">
+        <div class="property-card h-100">
+          <img src="{{ property.image_url }}" class="card-img-top" alt="{{ property.name }}" />
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="badge badge-soft">{{ property.property_type }}</span>
+              <span class="status-badge {% if property.is_available %}available{% else %}not-available{% endif %}">{{ 'Available' if property.is_available else 'Booked' }}</span>
+            </div>
+            <h5>{{ property.name }}</h5>
+            <p class="location"><i class="bi bi-geo-alt"></i> {{ property.location }}</p>
+            <div class="meta-row">
+              <span><i class="bi bi-bed"></i> {{ property.bedrooms }} Beds</span>
+              <span><i class="bi bi-people"></i> {{ property.guests }} Guests</span>
+            </div>
+            <div class="price-row mt-3">
+              <strong>₹{{ '{:,.0f}'.format(property.price_per_night) }}</strong>
+              <span>/ night</span>
+            </div>
+            <div class="d-grid gap-2 mt-4">
+              <a href="{{ url_for('property_details', property_id=property.id) }}" class="btn btn-outline-primary">View Details</a>
+              <a href="{{ url_for('booking', property_id=property.id) }}" class="btn btn-primary">Book Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section alt-bg py-5">
+  <div class="container">
+    <div class="section-header">
+      <p class="eyebrow text-primary">Popular Destinations</p>
+      <h2>Explore beautiful escapes across India</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="destination-card" style="background-image:url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=900&q=80');">
+          <div class="destination-content">
+            <h4>Coorg</h4>
+            <p>Luxury villas and misty mornings</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="destination-card" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80');">
+          <div class="destination-content">
+            <h4>Wayanad</h4>
+            <p>Nature trails and farm stays</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="destination-card" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80');">
+          <div class="destination-content">
+            <h4>Goa</h4>
+            <p>Beachside relaxation and family homes</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section py-5">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80" alt="About Avothar" class="img-fluid rounded-4 shadow-lg" />
+      </div>
+      <div class="col-lg-6">
+        <p class="eyebrow text-primary">About Us</p>
+        <h2>Curated luxury experiences rooted in comfort and culture.</h2>
+        <p>Avothar Farms & Stays blends premium hospitality with serene countryside living. From breathtaking villas to handcrafted farm retreats, we help every guest create memorable moments in beautifully designed spaces.</p>
+        <div class="row g-3 mt-2">
+          <div class="col-sm-6">
+            <div class="info-pill">
+              <i class="bi bi-shield-check"></i>
+              <span>Verified properties</span>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="info-pill">
+              <i class="bi bi-clock-history"></i>
+              <span>Fast bookings</span>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="info-pill">
+              <i class="bi bi-stars"></i>
+              <span>Premium support</span>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="info-pill">
+              <i class="bi bi-tree"></i>
+              <span>Nature-first stays</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt-bg py-5">
+  <div class="container">
+    <div class="section-header">
+      <p class="eyebrow text-primary">Facilities</p>
+      <h2>Everything you need for a memorable stay</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-3 col-sm-6">
+        <div class="facility-box text-center">
+          <i class="bi bi-water"></i>
+          <h5>Swimming Pool</h5>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="facility-box text-center">
+          <i class="bi bi-wifi"></i>
+          <h5>Free Wi-Fi</h5>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="facility-box text-center">
+          <i class="bi bi-car-front"></i>
+          <h5>Parking</h5>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="facility-box text-center">
+          <i class="bi bi-fire"></i>
+          <h5>Bonfire</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section py-5">
+  <div class="container">
+    <div class="section-header">
+      <p class="eyebrow text-primary">Guest Reviews</p>
+      <h2>What our visitors say</h2>
+    </div>
+    <div class="row g-4">
+      {% for review in reviews %}
+      <div class="col-md-4">
+        <div class="review-card h-100">
+          <div class="stars">★★★★★</div>
+          <p>“{{ review.review_text }}”</p>
+          <div class="reviewer">
+            <strong>{{ review.customer_name }}</strong>
+            <span>{{ review.property_name }}</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section contact-section py-5">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-5">
+        <p class="eyebrow text-primary">Contact</p>
+        <h2>Let’s plan your next stay.</h2>
+        <ul class="contact-list list-unstyled">
+          <li><i class="bi bi-geo-alt-fill"></i> 87 Green Valley Road, Bengaluru</li>
+          <li><i class="bi bi-phone-fill"></i> +91 98765 43210</li>
+          <li><i class="bi bi-envelope-fill"></i> hello@avotharstays.com</li>
+        </ul>
+      </div>
+      <div class="col-lg-7">
+        <div class="contact-card">
+          <form>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="Your Name" />
+              </div>
+              <div class="col-md-6">
+                <input type="email" class="form-control" placeholder="Email Address" />
+              </div>
+              <div class="col-12">
+                <textarea class="form-control" rows="5" placeholder="Tell us about your preferred dates and property type"></textarea>
+              </div>
+              <div class="col-12">
+                <button type="button" class="btn btn-primary">Send Enquiry</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

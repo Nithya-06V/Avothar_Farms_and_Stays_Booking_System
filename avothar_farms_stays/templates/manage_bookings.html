@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Manage Bookings | Avothar Farms & Stays{% endblock %}
+{% block content %}
+<section class="section py-5">
+  <div class="container">
+    <div class="mb-4">
+      <p class="eyebrow text-primary">Booking Management</p>
+      <h1>All Bookings</h1>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table booking-table align-middle">
+        <thead>
+          <tr>
+            <th>Booking ID</th>
+            <th>Customer</th>
+            <th>Property</th>
+            <th>Check-in</th>
+            <th>Check-out</th>
+            <th>Status</th>
+            <th>Amount</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for booking in bookings %}
+          <tr>
+            <td>{{ booking.booking_id }}</td>
+            <td>{{ booking.customer_name }}</td>
+            <td>{{ booking.property_name }}</td>
+            <td>{{ booking.check_in }}</td>
+            <td>{{ booking.check_out }}</td>
+            <td><span class="status-display {{ booking.status|lower }}">{{ booking.status }}</span></td>
+            <td>₹{{ '{:,.0f}'.format(booking.total_amount) }}</td>
+            <td>
+              <form method="post" class="d-flex gap-2 align-items-center">
+                <input type="hidden" name="booking_id" value="{{ booking.booking_id }}" />
+                <select class="form-select form-select-sm" name="status">
+                  <option value="Pending" {% if booking.status == 'Pending' %}selected{% endif %}>Pending</option>
+                  <option value="Confirmed" {% if booking.status == 'Confirmed' %}selected{% endif %}>Confirmed</option>
+                  <option value="Completed" {% if booking.status == 'Completed' %}selected{% endif %}>Completed</option>
+                  <option value="Cancelled" {% if booking.status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                </select>
+                <button type="submit" class="btn btn-sm btn-primary">Update</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock %}

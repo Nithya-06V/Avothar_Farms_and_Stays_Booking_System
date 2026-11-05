@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}Edit Property | Avothar Farms & Stays{% endblock %}
+{% block content %}
+<section class="section py-5">
+  <div class="container">
+    <div class="form-panel mx-auto" style="max-width: 900px;">
+      <h1>Edit Property</h1>
+      <form method="post" enctype="multipart/form-data">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Property Type</label>
+            <select class="form-select" name="property_type" required>
+              <option value="Villa" {% if property.property_type == 'Villa' %}selected{% endif %}>Villa</option>
+              <option value="Farmhouse" {% if property.property_type == 'Farmhouse' %}selected{% endif %}>Farmhouse</option>
+              <option value="House" {% if property.property_type == 'House' %}selected{% endif %}>Independent House</option>
+              <option value="Cottage" {% if property.property_type == 'Cottage' %}selected{% endif %}>Cottage</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Property Name</label>
+            <input type="text" class="form-control" name="name" value="{{ property.name }}" required />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Location</label>
+            <input type="text" class="form-control" name="location" value="{{ property.location }}" required />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Price per Night (₹)</label>
+            <input type="number" class="form-control" name="price_per_night" min="1" value="{{ property.price_per_night }}" required />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Bedrooms</label>
+            <input type="number" class="form-control" name="bedrooms" min="1" value="{{ property.bedrooms }}" required />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Guests</label>
+            <input type="number" class="form-control" name="guests" min="1" value="{{ property.guests }}" required />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Max Guests</label>
+            <input type="number" class="form-control" name="max_guests" min="1" value="{{ property.max_guests or property.guests }}" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Main Image URL</label>
+            <input type="url" class="form-control" name="image_url" value="{{ property.image_url }}" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Upload New Image</label>
+            <input type="file" class="form-control" name="image_file" accept="image/*" />
+          </div>
+          <div class="col-12">
+            <label class="form-label">Gallery Images (one URL per line)</label>
+            <textarea class="form-control" name="gallery_images" rows="4">{{ '\n'.join(property.gallery()) }}</textarea>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Facilities</label>
+            <input type="text" class="form-control" name="facilities" value="{{ property.facilities }}" required />
+          </div>
+          <div class="col-12">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" name="description" rows="5" required>{{ property.description }}</textarea>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Check-in Time</label>
+            <input type="time" class="form-control" name="check_in" value="{{ property.check_in }}" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Check-out Time</label>
+            <input type="time" class="form-control" name="check_out" value="{{ property.check_out }}" />
+          </div>
+          <div class="col-md-6 form-check mt-2">
+            <input class="form-check-input" type="checkbox" name="is_available" {% if property.is_available %}checked{% endif %} />
+            <label class="form-check-label">Available</label>
+          </div>
+          <div class="col-md-6 form-check mt-2">
+            <input class="form-check-input" type="checkbox" name="featured" {% if property.featured %}checked{% endif %} />
+            <label class="form-check-label">Featured</label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-4">Update Property</button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

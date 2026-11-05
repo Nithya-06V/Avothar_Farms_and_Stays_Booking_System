@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Booking Confirmed | Avothar Farms & Stays{% endblock %}
+{% block content %}
+<section class="section py-5">
+  <div class="container">
+    <div class="confirmation-card shadow-sm text-center mx-auto">
+      <div class="success-icon"><i class="bi bi-check-circle-fill"></i></div>
+      <h1>Booking Confirmed</h1>
+      <p>Your reservation has been created successfully. Please use the booking reference below for follow-up and receipt download.</p>
+
+      <div class="row text-start g-3 mt-4">
+        <div class="col-md-6"><strong>Booking ID:</strong> {{ booking.booking_id }}</div>
+        <div class="col-md-6"><strong>Customer:</strong> {{ booking.customer_name }}</div>
+        <div class="col-md-6"><strong>Property:</strong> {{ booking.property_name }}</div>
+        <div class="col-md-6"><strong>Property Type:</strong> {{ booking.property_type }}</div>
+        <div class="col-md-6"><strong>Check-in:</strong> {{ booking.check_in }}</div>
+        <div class="col-md-6"><strong>Check-out:</strong> {{ booking.check_out }}</div>
+        <div class="col-md-6"><strong>Guests:</strong> {{ booking.guests }}</div>
+        <div class="col-md-6"><strong>Rooms:</strong> {{ booking.rooms }}</div>
+        <div class="col-md-6"><strong>Price per Night:</strong> ₹{{ '{:,.0f}'.format(booking.price_per_night) }}</div>
+        <div class="col-md-6"><strong>Total Nights:</strong> {{ booking.nights }}</div>
+        <div class="col-md-12"><strong>Total Amount:</strong> ₹{{ '{:,.0f}'.format(booking.total_amount) }}</div>
+      </div>
+
+      <div class="mt-4 d-flex flex-wrap justify-content-center gap-3">
+        <a href="{{ url_for('download_receipt', booking_id=booking.booking_id) }}" class="btn btn-primary">Download Receipt PDF</a>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary">View Booking History</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

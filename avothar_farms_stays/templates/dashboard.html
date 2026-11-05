@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard | Avothar Farms & Stays{% endblock %}
+{% block content %}
+<section class="section py-5">
+  <div class="container">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+      <div>
+        <p class="eyebrow text-primary">My Dashboard</p>
+        <h1>Booking overview</h1>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-3">
+        <div class="mini-stat-card">
+          <span>Total Bookings</span>
+          <strong>{{ stats.total_bookings }}</strong>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="mini-stat-card">
+          <span>Upcoming</span>
+          <strong>{{ stats.upcoming_bookings }}</strong>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="mini-stat-card">
+          <span>Completed</span>
+          <strong>{{ stats.completed_bookings }}</strong>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="mini-stat-card">
+          <span>Cancelled</span>
+          <strong>{{ stats.cancelled_bookings }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="filters-bar mb-4">
+      <form method="get" class="row g-3 align-items-end">
+        <div class="col-md-3">
+          <label class="form-label">Status</label>
+          <select class="form-select" name="status">
+            <option value="All">All</option>
+            <option value="Pending" {% if status_filter == 'Pending' %}selected{% endif %}>Pending</option>
+            <option value="Confirmed" {% if status_filter == 'Confirmed' %}selected{% endif %}>Confirmed</option>
+            <option value="Completed" {% if status_filter == 'Completed' %}selected{% endif %}>Completed</option>
+            <option value="Cancelled" {% if status_filter == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Date From</label>
+          <input type="date" class="form-control" name="date_from" />
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Date To</label>
+          <input type="date" class="form-control" name="date_to" />
+        </div>
+        <div class="col-md-3">
+          <button type="submit" class="btn btn-primary w-100">Search</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table booking-table align-middle">
+        <thead>
+          <tr>
+            <th>Booking ID</th>
+            <th>Customer</th>
+            <th>Property</th>
+            <th>Check-in</th>
+            <th>Check-out</th>
+            <th>Status</th>
+            <th>Amount</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for booking in bookings %}
+          <tr>
+            <td>{{ booking.booking_id }}</td>
+            <td>{{ booking.customer_name }}</td>
+            <td>{{ booking.property_name }}</td>
+            <td>{{ booking.check_in }}</td>
+            <td>{{ booking.check_out }}</td>
+            <td><span class="status-display {{ booking.status|lower }}">{{ booking.status }}</span></td>
+            <td>₹{{ '{:,.0f}'.format(booking.total_amount) }}</td>
+            <td>
+              <a href="{{ url_for('download_receipt', booking_id=booking.booking_id) }}" class="btn btn-sm btn-outline-primary">Receipt</a>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="8" class="text-center text-muted">No bookings found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock %}

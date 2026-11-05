@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %}Book {{ property.name }} | Avothar Farms & Stays{% endblock %}
+{% block content %}
+<section class="section py-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="property-summary shadow-sm">
+          <img src="{{ property.image_url }}" alt="{{ property.name }}" />
+          <div class="p-4">
+            <span class="badge badge-soft mb-2">{{ property.property_type }}</span>
+            <h3>{{ property.name }}</h3>
+            <p class="location"><i class="bi bi-geo-alt"></i> {{ property.location }}</p>
+            <div class="price-row large mb-3">
+              <strong>₹{{ '{:,.0f}'.format(property.price_per_night) }}</strong>
+              <span>/ night</span>
+            </div>
+            <ul class="detail-list compact">
+              <li><i class="bi bi-bed"></i> {{ property.bedrooms }} bedrooms</li>
+              <li><i class="bi bi-people"></i> {{ property.guests }} guests</li>
+              <li><i class="bi bi-calendar-check"></i> Check-in {{ property.check_in }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="form-panel">
+          <h2>Complete your booking</h2>
+          <form method="post" id="bookingForm">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Customer Name</label>
+                <input type="text" class="form-control" name="customer_name" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-control" name="email" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Mobile Number</label>
+                <input type="tel" class="form-control" name="mobile" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Property Type</label>
+                <input type="text" class="form-control" value="{{ property.property_type }}" readonly />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Property Name</label>
+                <input type="text" class="form-control" value="{{ property.name }}" readonly />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Number of Guests</label>
+                <input type="number" class="form-control" name="guests" min="1" value="2" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Check-in Date</label>
+                <input type="date" class="form-control" id="checkIn" name="check_in" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Check-out Date</label>
+                <input type="date" class="form-control" id="checkOut" name="check_out" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Number of Rooms</label>
+                <input type="number" class="form-control" id="rooms" name="rooms" min="1" value="1" required />
+              </div>
+              <div class="col-12">
+                <label class="form-label">Special Requests</label>
+                <textarea class="form-control" name="special_requests" rows="4" placeholder="Optional note for the host"></textarea>
+              </div>
+            </div>
+
+            <div class="booking-summary mt-4">
+              <h4>Booking Summary</h4>
+              <div class="summary-row">
+                <span>Price per night</span>
+                <strong>₹<span id="pricePerNight">{{ property.price_per_night }}</span></strong>
+              </div>
+              <div class="summary-row">
+                <span>Number of nights</span>
+                <strong><span id="nightsValue">0</span></strong>
+              </div>
+              <div class="summary-row total-row">
+                <span>Total amount</span>
+                <strong>₹<span id="totalAmountValue">0</span></strong>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-4 w-100">Confirm Booking</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

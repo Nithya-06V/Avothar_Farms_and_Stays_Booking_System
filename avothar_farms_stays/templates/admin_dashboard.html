@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard | Avothar Farms & Stays{% endblock %}
+{% block content %}
+<section class="section py-5">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <p class="eyebrow text-primary">Admin Panel</p>
+        <h1>Dashboard Overview</h1>
+      </div>
+      <div class="btn-group">
+        <a href="{{ url_for('manage_properties') }}" class="btn btn-primary">Manage Properties</a>
+        <a href="{{ url_for('manage_bookings') }}" class="btn btn-outline-primary">Manage Bookings</a>
+        <a href="{{ url_for('reports') }}" class="btn btn-outline-primary">Reports</a>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-3"><div class="mini-stat-card"><span>Total Properties</span><strong>{{ stats.total_properties }}</strong></div></div>
+      <div class="col-md-3"><div class="mini-stat-card"><span>Total Villas</span><strong>{{ stats.total_villas }}</strong></div></div>
+      <div class="col-md-3"><div class="mini-stat-card"><span>Total Farmhouses</span><strong>{{ stats.total_farmhouses }}</strong></div></div>
+      <div class="col-md-3"><div class="mini-stat-card"><span>Total Houses</span><strong>{{ stats.total_houses }}</strong></div></div>
+      <div class="col-md-3"><div class="mini-stat-card"><span>Total Bookings</span><strong>{{ stats.total_bookings }}</strong></div></div>
+      <div class="col-md-3"><div class="mini-stat-card"><span>Pending</span><strong>{{ stats.pending_bookings }}</strong></div></div>
+      <div class="col-md-3"><div class="mini-stat-card"><span>Confirmed</span><strong>{{ stats.confirmed_bookings }}</strong></div></div>
+      <div class="col-md-3"><div class="mini-stat-card revenue"><span>Total Revenue</span><strong>₹{{ '{:,.0f}'.format(stats.total_revenue) }}</strong></div></div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table booking-table align-middle">
+        <thead>
+          <tr>
+            <th>Booking ID</th>
+            <th>Customer</th>
+            <th>Property</th>
+            <th>Check-in</th>
+            <th>Check-out</th>
+            <th>Status</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for booking in bookings %}
+          <tr>
+            <td>{{ booking.booking_id }}</td>
+            <td>{{ booking.customer_name }}</td>
+            <td>{{ booking.property_name }}</td>
+            <td>{{ booking.check_in }}</td>
+            <td>{{ booking.check_out }}</td>
+            <td><span class="status-display {{ booking.status|lower }}">{{ booking.status }}</span></td>
+            <td>₹{{ '{:,.0f}'.format(booking.total_amount) }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block title %}{{ property.name }} | Avothar Farms & Stays{% endblock %}
+{% block content %}
+<section class="property-detail-section py-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-7">
+        <div class="detail-gallery">
+          {% for image in property.gallery() %}
+            <img src="{{ image }}" alt="{{ property.name }}" class="img-fluid rounded-4" />
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="detail-card shadow-sm">
+          <span class="badge badge-soft mb-2">{{ property.property_type }}</span>
+          <h1>{{ property.name }}</h1>
+          <p class="location"><i class="bi bi-geo-alt"></i> {{ property.location }}</p>
+          <div class="price-row large">
+            <strong>₹{{ '{:,.0f}'.format(property.price_per_night) }}</strong>
+            <span>/ night</span>
+          </div>
+          <ul class="detail-list">
+            <li><i class="bi bi-bed"></i> {{ property.bedrooms }} Bedrooms</li>
+            <li><i class="bi bi-people"></i> Up to {{ property.max_guests or property.guests }} Guests</li>
+            <li><i class="bi bi-clock"></i> Check-in {{ property.check_in }} / Check-out {{ property.check_out }}</li>
+          </ul>
+          <div class="d-grid gap-2 mb-3">
+            <a href="{{ url_for('booking', property_id=property.id) }}" class="btn btn-primary">Book Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-5 g-4">
+      <div class="col-lg-8">
+        <div class="content-panel">
+          <h3>About this stay</h3>
+          <p>{{ property.description }}</p>
+          <h4 class="mt-4">Amenities</h4>
+          <div class="amenity-list">
+            {% for item in property.facilities.split(',') %}
+              <span>{{ item.strip() }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="content-panel">
+          <h4>Stay Highlights</h4>
+          <ul class="detail-list highlight-list">
+            <li><i class="bi bi-snow"></i> Air-conditioned rooms</li>
+            <li><i class="bi bi-wifi"></i> High-speed internet</li>
+            <li><i class="bi bi-car-front"></i> Dedicated parking</li>
+            <li><i class="bi bi-bag-check"></i> Housekeeping support</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    {% if similar %}
+    <div class="mt-5">
+      <div class="section-header text-start">
+        <p class="eyebrow text-primary">You may also like</p>
+        <h2>More properties</h2>
+      </div>
+      <div class="row g-4">
+        {% for item in similar %}
+        <div class="col-md-4">
+          <div class="property-card h-100">
+            <img src="{{ item.image_url }}" alt="{{ item.name }}" class="card-img-top" />
+            <div class="card-body">
+              <h5>{{ item.name }}</h5>
+              <p class="location"><i class="bi bi-geo-alt"></i> {{ item.location }}</p>
+              <div class="price-row mt-3">
+                <strong>₹{{ '{:,.0f}'.format(item.price_per_night) }}</strong>
+                <span>/ night</span>
+              </div>
+              <a href="{{ url_for('property_details', property_id=item.id) }}" class="btn btn-outline-primary mt-3 w-100">View</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

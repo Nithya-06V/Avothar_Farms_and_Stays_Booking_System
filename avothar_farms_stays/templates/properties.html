@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Properties | Avothar Farms & Stays{% endblock %}
+{% block content %}
+<section class="page-banner">
+  <div class="container">
+    <div class="banner-content">
+      <p class="eyebrow text-primary">Explore Stays</p>
+      <h1>Luxury villas, farmhouses and cosy cottages</h1>
+    </div>
+  </div>
+</section>
+
+<section class="section py-5">
+  <div class="container">
+    <div class="property-filters mb-4">
+      <div class="d-flex flex-wrap gap-2">
+        <a href="{{ url_for('properties', type='all') }}" class="btn {% if selected_type == 'all' %}btn-primary{% else %}btn-outline-primary{% endif %}">All</a>
+        <a href="{{ url_for('properties', type='Villa') }}" class="btn {% if selected_type == 'Villa' %}btn-primary{% else %}btn-outline-primary{% endif %}">Villas</a>
+        <a href="{{ url_for('properties', type='Farmhouse') }}" class="btn {% if selected_type == 'Farmhouse' %}btn-primary{% else %}btn-outline-primary{% endif %}">Farmhouses</a>
+        <a href="{{ url_for('properties', type='House') }}" class="btn {% if selected_type == 'House' %}btn-primary{% else %}btn-outline-primary{% endif %}">Houses</a>
+        <a href="{{ url_for('properties', type='Cottage') }}" class="btn {% if selected_type == 'Cottage' %}btn-primary{% else %}btn-outline-primary{% endif %}">Cottages</a>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      {% for property in properties %}
+      <div class="col-lg-4 col-md-6">
+        <div class="property-card h-100">
+          <img src="{{ property.image_url }}" class="card-img-top" alt="{{ property.name }}" />
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="badge badge-soft">{{ property.property_type }}</span>
+              <span class="status-badge {% if property.is_available %}available{% else %}not-available{% endif %}">{{ 'Available' if property.is_available else 'Booked' }}</span>
+            </div>
+            <h5>{{ property.name }}</h5>
+            <p class="location"><i class="bi bi-geo-alt"></i> {{ property.location }}</p>
+            <p class="small text-muted">{{ property.description[:120] }}...</p>
+            <div class="meta-row">
+              <span><i class="bi bi-bed"></i> {{ property.bedrooms }} Beds</span>
+              <span><i class="bi bi-people"></i> {{ property.guests }} Guests</span>
+            </div>
+            <div class="price-row mt-3">
+              <strong>₹{{ '{:,.0f}'.format(property.price_per_night) }}</strong>
+              <span>/ night</span>
+            </div>
+            <div class="d-grid gap-2 mt-4">
+              <a href="{{ url_for('property_details', property_id=property.id) }}" class="btn btn-outline-primary">View Details</a>
+              <a href="{{ url_for('booking', property_id=property.id) }}" class="btn btn-primary">Book Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
